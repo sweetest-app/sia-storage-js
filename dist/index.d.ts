@@ -186,4 +186,4 @@ declare function openStreams<S extends Sdk | SharedSdk>(sdk: S, credentials: Cre
 /** Initialize the WASM module. Safe to call multiple times. */
 declare function initSia(): Promise<void>;
 
-export { type AppCredentials, type CredentialsFor, type FileEvents, type FileOptions, type SharedCredentials, type StreamLogLevel, type StreamStatus, type StreamedFile, type StreamingOptions, type Streams, UploadCancelled, detectPrivateRelay, enableStreaming, finalizePacked, initSia, openStreams };
+export { type AppCredentials, type CancelablePacked, type CredentialsFor, type FileEvents, type FileOptions, type SharedCredentials, type StreamLogLevel, type StreamStatus, type StreamedFile, type StreamingOptions, type Streams, UploadCancelled, detectPrivateRelay, enableStreaming, finalizePacked, initSia, openStreams };

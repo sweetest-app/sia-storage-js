@@ -530,6 +530,10 @@ export class PinnedObject {
      */
     static open(app_key: AppKey, sealed_obj: SealedObject): PinnedObject;
     /**
+     * Returns a new object with the slab at `index` replaced.
+     */
+    replaceSlab(index: number, slab: Slab): PinnedObject;
+    /**
      * Seals the object for offline storage.
      */
     seal(app_key: AppKey): SealedObject;
@@ -553,6 +557,11 @@ export class PinnedObject {
      * Returns the last updated time.
      */
     updatedAt(): Date;
+    /**
+     * Returns a new object that reuses this object's data key with the given
+     * slabs. No bytes are uploaded or downloaded.
+     */
+    withSlabs(slabs: Slab[]): PinnedObject;
 }
 
 /**
@@ -887,12 +896,14 @@ export interface InitOutput {
     readonly pinnedobject_metadata: (a: number) => [number, number];
     readonly pinnedobject_new: () => number;
     readonly pinnedobject_open: (a: number, b: any) => [number, number, number];
+    readonly pinnedobject_replaceSlab: (a: number, b: number, c: any) => [number, number, number];
     readonly pinnedobject_seal: (a: number, b: number) => [number, number, number];
     readonly pinnedobject_size: (a: number) => number;
     readonly pinnedobject_slabs: (a: number) => [number, number, number];
     readonly pinnedobject_truncate: (a: number, b: bigint) => number;
     readonly pinnedobject_updateMetadata: (a: number, b: number, c: number) => void;
     readonly pinnedobject_updatedAt: (a: number) => any;
+    readonly pinnedobject_withSlabs: (a: number, b: any) => [number, number, number];
     readonly preauthorizedkey_export: (a: number) => [number, number];
     readonly preauthorizedkey_import: (a: number, b: number) => [number, number, number];
     readonly preauthorizedkey_new: () => number;

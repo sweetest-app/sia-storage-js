@@ -183,6 +183,13 @@ export declare class PinnedObject {
   truncate(length: bigint): PinnedObject
   /** Returns the total encoded size after erasure coding. */
   encodedSize(): bigint
+  /**
+   * Returns a new object that reuses this object's data key with the given
+   * slabs. No bytes are uploaded or downloaded.
+   */
+  withSlabs(slabs: Array<Slab>): PinnedObject
+  /** Returns a new object with the slab at `index` replaced. */
+  replaceSlab(index: number, slab: Slab): PinnedObject
   /** Returns the slabs that make up the object. */
   slabs(): Array<Slab>
   /** Returns the metadata associated with the object. */

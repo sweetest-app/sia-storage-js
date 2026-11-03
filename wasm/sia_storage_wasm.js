@@ -821,6 +821,19 @@ export class PinnedObject {
         return PinnedObject.__wrap(ret[0]);
     }
     /**
+     * Returns a new object with the slab at `index` replaced.
+     * @param {number} index
+     * @param {Slab} slab
+     * @returns {PinnedObject}
+     */
+    replaceSlab(index, slab) {
+        const ret = wasm.pinnedobject_replaceSlab(this.__wbg_ptr, index, slab);
+        if (ret[2]) {
+            throw takeFromExternrefTable0(ret[1]);
+        }
+        return PinnedObject.__wrap(ret[0]);
+    }
+    /**
      * Seals the object for offline storage.
      * @param {AppKey} app_key
      * @returns {SealedObject}
@@ -877,6 +890,19 @@ export class PinnedObject {
     updatedAt() {
         const ret = wasm.pinnedobject_updatedAt(this.__wbg_ptr);
         return ret;
+    }
+    /**
+     * Returns a new object that reuses this object's data key with the given
+     * slabs. No bytes are uploaded or downloaded.
+     * @param {Slab[]} slabs
+     * @returns {PinnedObject}
+     */
+    withSlabs(slabs) {
+        const ret = wasm.pinnedobject_withSlabs(this.__wbg_ptr, slabs);
+        if (ret[2]) {
+            throw takeFromExternrefTable0(ret[1]);
+        }
+        return PinnedObject.__wrap(ret[0]);
     }
 }
 if (Symbol.dispose) PinnedObject.prototype[Symbol.dispose] = PinnedObject.prototype.free;
