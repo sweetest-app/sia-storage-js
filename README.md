@@ -282,6 +282,13 @@ Returned from `Builder.register()`, `Builder.connected()`, or `Builder.connectPr
 | `reconnecting()` | Whether the approved connect key already has an account. |
 | `matchesExistingAppKey(phrase)` | Whether a phrase derives an already-registered app key. |
 | `connectPreAuthorized(key, phrase)` | Skip the approval flow with a `PreAuthorizedKey` → `Sdk`. |
+| `setTimeouts(connectMs, transferMs)` | Override the connect and transfer caps before connecting. |
+
+The transport is shared per runtime, so `setTimeouts` applies to every SDK created after
+the call. Defaults are 15 seconds to open a WebTransport session and 30 seconds for one RPC.
+The transfer cap is a total budget, not an idle one: a host that keeps trickling bytes still
+hits it. A session that takes longer than the connect cap is dropped and the address is
+marked bad, because a slow handshake predicts a slow write.
 
 ### `AppKey`
 
