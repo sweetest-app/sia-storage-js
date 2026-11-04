@@ -137,6 +137,11 @@ export interface ShardAttemptInfo {
     ok: boolean;
     elapsedMs: number;
     error: string | undefined;
+    inFlight: number;
+    committed: number;
+    waiting: number;
+    retrying: number;
+    limit: number;
 }
 
 /**
@@ -293,6 +298,12 @@ export class Builder {
      * Returns the approval URL the user must visit.
      */
     responseUrl(): string;
+    /**
+     * Overrides the WebTransport connect and transfer caps, in milliseconds.
+     * Must be called before connecting. The transport these configure is
+     * shared, so the last call wins for the whole runtime.
+     */
+    setTimeouts(connect_ms: number, transfer_ms: number): void;
     /**
      * Waits for the user to approve the connection request.
      *
@@ -863,6 +874,7 @@ export interface InitOutput {
     readonly builder_register: (a: number, b: number, c: number) => any;
     readonly builder_requestConnection: (a: number) => any;
     readonly builder_responseUrl: (a: number) => [number, number, number, number];
+    readonly builder_setTimeouts: (a: number, b: number, c: number) => [number, number];
     readonly builder_waitForApproval: (a: number, b: number, c: number, d: number, e: number) => any;
     readonly encodedSize: (a: number, b: number, c: number) => [number, number, number];
     readonly generateRecoveryPhrase: () => [number, number];
