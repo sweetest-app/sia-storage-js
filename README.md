@@ -285,10 +285,15 @@ Returned from `Builder.register()`, `Builder.connected()`, or `Builder.connectPr
 | `setTimeouts(connectMs, transferMs)` | Override the connect and transfer caps before connecting. |
 
 The transport is shared per runtime, so `setTimeouts` applies to every SDK created after
-the call. Defaults are 15 seconds to open a WebTransport session and 30 seconds for one RPC.
+the call. Defaults are 10 seconds to open a WebTransport session and 30 seconds for one RPC.
 The transfer cap is a total budget, not an idle one: a host that keeps trickling bytes still
-hits it. A session that takes longer than the connect cap is dropped and the address is
-marked bad, because a slow handshake predicts a slow write.
+hits it. A session that takes longer than the connect cap is dropped, because a slow handshake
+predicts a slow write. Only an address whose handshake the browser itself refuses is
+remembered and skipped for five minutes; a timeout is not, since the browser can hold a
+healthy host back while it counts earlier failures.
+
+Uploads also reuse hosts: a shard's first host is usually one that already served a shard,
+with three picks in ten left for hosts nobody has tried, so a better one can still be found.
 
 ### `AppKey`
 
