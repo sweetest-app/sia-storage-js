@@ -474,6 +474,15 @@ export class PackedUpload {
      */
     add(stream: ReadableStream): Promise<number>;
     /**
+     * The objects whose slabs have all pinned, indexed the same way
+     * [add](Self::add) was called. `undefined` at an index means that object
+     * still has a slab in flight.
+     *
+     * This is how a caller composes and pins files while the upload keeps
+     * running, instead of waiting for [finalize](Self::finalize).
+     */
+    addedObjects(): Promise<Array<any>>;
+    /**
      * Cancels the packed upload. Immediately interrupts any in-flight `add`
      * and aborts all pending slab uploads.
      */
@@ -481,11 +490,6 @@ export class PackedUpload {
     /**
      * Finalizes the packed upload and returns the resulting objects.
      * Each object must be pinned separately with `sdk.pinObject()`.
-     *
-     * Borrows instead of consuming `self`, so the handle stays alive and
-     * [cancel](Self::cancel) can still be called while this future runs. The
-     * core already races the work against the cancel token and drops the
-     * upload when it fires, which aborts in-flight slab tasks.
      */
     finalize(): Promise<PinnedObject[]>;
     /**
@@ -896,6 +900,7 @@ export interface InitOutput {
     readonly objectsummary_size: (a: number) => number;
     readonly objectsummary_updatedAt: (a: number) => any;
     readonly packedupload_add: (a: number, b: any) => any;
+    readonly packedupload_addedObjects: (a: number) => any;
     readonly packedupload_cancel: (a: number) => void;
     readonly packedupload_finalize: (a: number) => any;
     readonly packedupload_length: (a: number) => number;

@@ -689,6 +689,19 @@ export class PackedUpload {
         return ret;
     }
     /**
+     * The objects whose slabs have all pinned, indexed the same way
+     * [add](Self::add) was called. `undefined` at an index means that object
+     * still has a slab in flight.
+     *
+     * This is how a caller composes and pins files while the upload keeps
+     * running, instead of waiting for [finalize](Self::finalize).
+     * @returns {Promise<Array<any>>}
+     */
+    addedObjects() {
+        const ret = wasm.packedupload_addedObjects(this.__wbg_ptr);
+        return ret;
+    }
+    /**
      * Cancels the packed upload. Immediately interrupts any in-flight `add`
      * and aborts all pending slab uploads.
      */
@@ -698,11 +711,6 @@ export class PackedUpload {
     /**
      * Finalizes the packed upload and returns the resulting objects.
      * Each object must be pinned separately with `sdk.pinObject()`.
-     *
-     * Borrows instead of consuming `self`, so the handle stays alive and
-     * [cancel](Self::cancel) can still be called while this future runs. The
-     * core already races the work against the cancel token and drops the
-     * upload when it fires, which aborts in-flight slab tasks.
      * @returns {Promise<PinnedObject[]>}
      */
     finalize() {
@@ -2090,6 +2098,10 @@ function __wbg_get_imports() {
         __wbg_prototypesetcall_4770620bbe4688a0: function(arg0, arg1, arg2) {
             Uint8Array.prototype.set.call(getArrayU8FromWasm0(arg0, arg1), arg2);
         },
+        __wbg_push_d2ae3af0c1217ae6: function(arg0, arg1) {
+            const ret = arg0.push(arg1);
+            return ret;
+        },
         __wbg_queueMicrotask_0ab5b2d2393e99b9: function(arg0) {
             const ret = arg0.queueMicrotask;
             return ret;
@@ -2260,32 +2272,32 @@ function __wbg_get_imports() {
             return ret;
         },
         __wbindgen_cast_0000000000000001: function(arg0, arg1) {
-            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [Externref], shim_idx: 1010, ret: Result(Unit), inner_ret: Some(Result(Unit)) }, mutable: true }) -> Externref`.
+            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [Externref], shim_idx: 1015, ret: Result(Unit), inner_ret: Some(Result(Unit)) }, mutable: true }) -> Externref`.
             const ret = makeMutClosure(arg0, arg1, wasm_bindgen_f693a71efa87f9bb___convert__closures_____invoke___wasm_bindgen_f693a71efa87f9bb___JsValue__core_37ee0ce0c4cd57d5___result__Result_____wasm_bindgen_f693a71efa87f9bb___JsError___true_);
             return ret;
         },
         __wbindgen_cast_0000000000000002: function(arg0, arg1) {
-            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [Externref], shim_idx: 456, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
+            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [Externref], shim_idx: 461, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
             const ret = makeMutClosure(arg0, arg1, wasm_bindgen_f693a71efa87f9bb___convert__closures_____invoke___wasm_bindgen_f693a71efa87f9bb___JsValue______true_);
             return ret;
         },
         __wbindgen_cast_0000000000000003: function(arg0, arg1) {
-            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [Externref], shim_idx: 516, ret: Result(Unit), inner_ret: Some(Result(Unit)) }, mutable: true }) -> Externref`.
+            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [Externref], shim_idx: 521, ret: Result(Unit), inner_ret: Some(Result(Unit)) }, mutable: true }) -> Externref`.
             const ret = makeMutClosure(arg0, arg1, wasm_bindgen_f693a71efa87f9bb___convert__closures_____invoke___wasm_bindgen_f693a71efa87f9bb___sys__Undefined__core_37ee0ce0c4cd57d5___result__Result_____wasm_bindgen_f693a71efa87f9bb___JsError___true_);
             return ret;
         },
         __wbindgen_cast_0000000000000004: function(arg0, arg1) {
-            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [NamedExternref("WebTransportBidirectionalStream")], shim_idx: 516, ret: Result(Unit), inner_ret: Some(Result(Unit)) }, mutable: true }) -> Externref`.
+            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [NamedExternref("WebTransportBidirectionalStream")], shim_idx: 521, ret: Result(Unit), inner_ret: Some(Result(Unit)) }, mutable: true }) -> Externref`.
             const ret = makeMutClosure(arg0, arg1, wasm_bindgen_f693a71efa87f9bb___convert__closures_____invoke___wasm_bindgen_f693a71efa87f9bb___sys__Undefined__core_37ee0ce0c4cd57d5___result__Result_____wasm_bindgen_f693a71efa87f9bb___JsError___true__3);
             return ret;
         },
         __wbindgen_cast_0000000000000005: function(arg0, arg1) {
-            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [NamedExternref("undefined")], shim_idx: 516, ret: Result(Unit), inner_ret: Some(Result(Unit)) }, mutable: true }) -> Externref`.
+            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [NamedExternref("undefined")], shim_idx: 521, ret: Result(Unit), inner_ret: Some(Result(Unit)) }, mutable: true }) -> Externref`.
             const ret = makeMutClosure(arg0, arg1, wasm_bindgen_f693a71efa87f9bb___convert__closures_____invoke___wasm_bindgen_f693a71efa87f9bb___sys__Undefined__core_37ee0ce0c4cd57d5___result__Result_____wasm_bindgen_f693a71efa87f9bb___JsError___true__4);
             return ret;
         },
         __wbindgen_cast_0000000000000006: function(arg0, arg1) {
-            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [], shim_idx: 817, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
+            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [], shim_idx: 822, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
             const ret = makeMutClosure(arg0, arg1, wasm_bindgen_f693a71efa87f9bb___convert__closures_____invoke_______true_);
             return ret;
         },

@@ -46,6 +46,7 @@ export const objectsummary_metadata: (a: number) => [number, number];
 export const objectsummary_size: (a: number) => number;
 export const objectsummary_updatedAt: (a: number) => any;
 export const packedupload_add: (a: number, b: any) => any;
+export const packedupload_addedObjects: (a: number) => any;
 export const packedupload_cancel: (a: number) => void;
 export const packedupload_finalize: (a: number) => any;
 export const packedupload_length: (a: number) => number;
