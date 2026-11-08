@@ -689,6 +689,19 @@ export class PackedUpload {
         return ret;
     }
     /**
+     * Queues one data shard of a slab opened with `registerSlab`.
+     * @param {number} slab
+     * @param {number} index
+     * @param {Uint8Array} data
+     * @returns {Promise<void>}
+     */
+    addShard(slab, index, data) {
+        const ptr0 = passArray8ToWasm0(data, wasm.__wbindgen_malloc);
+        const len0 = WASM_VECTOR_LEN;
+        const ret = wasm.packedupload_addShard(this.__wbg_ptr, slab, index, ptr0, len0);
+        return ret;
+    }
+    /**
      * The objects whose slabs have all pinned, indexed the same way
      * [add](Self::add) was called. `undefined` at an index means that object
      * still has a slab in flight.
@@ -718,6 +731,15 @@ export class PackedUpload {
         return ret;
     }
     /**
+     * Shard bytes the upload holds right now: queued shards, the shards a host
+     * is writing, parity being encoded, and the reader's buffer.
+     * @returns {Promise<number>}
+     */
+    heldBytes() {
+        const ret = wasm.packedupload_heldBytes(this.__wbg_ptr);
+        return ret;
+    }
+    /**
      * Total bytes added so far across all objects.
      * @returns {number}
      */
@@ -731,6 +753,26 @@ export class PackedUpload {
      */
     optimalDataSize() {
         const ret = wasm.packedupload_optimalDataSize(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * The highest [`heldBytes`](Self::held_bytes) reached, so the peak does
+     * not depend on how often it is sampled.
+     * @returns {Promise<number>}
+     */
+    peakHeldBytes() {
+        const ret = wasm.packedupload_peakHeldBytes(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * Opens a slab for shards that arrive one at a time, and returns its id.
+     * `0` means the upload was cancelled. Send its data shards with
+     * [`addShard`](Self::add_shard); the encoder produces parity from them.
+     * @param {number} length
+     * @returns {Promise<number>}
+     */
+    registerSlab(length) {
+        const ret = wasm.packedupload_registerSlab(this.__wbg_ptr, length);
         return ret;
     }
     /**
@@ -2272,32 +2314,32 @@ function __wbg_get_imports() {
             return ret;
         },
         __wbindgen_cast_0000000000000001: function(arg0, arg1) {
-            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [Externref], shim_idx: 1015, ret: Result(Unit), inner_ret: Some(Result(Unit)) }, mutable: true }) -> Externref`.
+            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [Externref], shim_idx: 1043, ret: Result(Unit), inner_ret: Some(Result(Unit)) }, mutable: true }) -> Externref`.
             const ret = makeMutClosure(arg0, arg1, wasm_bindgen_f693a71efa87f9bb___convert__closures_____invoke___wasm_bindgen_f693a71efa87f9bb___JsValue__core_37ee0ce0c4cd57d5___result__Result_____wasm_bindgen_f693a71efa87f9bb___JsError___true_);
             return ret;
         },
         __wbindgen_cast_0000000000000002: function(arg0, arg1) {
-            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [Externref], shim_idx: 461, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
+            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [Externref], shim_idx: 477, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
             const ret = makeMutClosure(arg0, arg1, wasm_bindgen_f693a71efa87f9bb___convert__closures_____invoke___wasm_bindgen_f693a71efa87f9bb___JsValue______true_);
             return ret;
         },
         __wbindgen_cast_0000000000000003: function(arg0, arg1) {
-            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [Externref], shim_idx: 521, ret: Result(Unit), inner_ret: Some(Result(Unit)) }, mutable: true }) -> Externref`.
+            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [Externref], shim_idx: 538, ret: Result(Unit), inner_ret: Some(Result(Unit)) }, mutable: true }) -> Externref`.
             const ret = makeMutClosure(arg0, arg1, wasm_bindgen_f693a71efa87f9bb___convert__closures_____invoke___wasm_bindgen_f693a71efa87f9bb___sys__Undefined__core_37ee0ce0c4cd57d5___result__Result_____wasm_bindgen_f693a71efa87f9bb___JsError___true_);
             return ret;
         },
         __wbindgen_cast_0000000000000004: function(arg0, arg1) {
-            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [NamedExternref("WebTransportBidirectionalStream")], shim_idx: 521, ret: Result(Unit), inner_ret: Some(Result(Unit)) }, mutable: true }) -> Externref`.
+            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [NamedExternref("WebTransportBidirectionalStream")], shim_idx: 538, ret: Result(Unit), inner_ret: Some(Result(Unit)) }, mutable: true }) -> Externref`.
             const ret = makeMutClosure(arg0, arg1, wasm_bindgen_f693a71efa87f9bb___convert__closures_____invoke___wasm_bindgen_f693a71efa87f9bb___sys__Undefined__core_37ee0ce0c4cd57d5___result__Result_____wasm_bindgen_f693a71efa87f9bb___JsError___true__3);
             return ret;
         },
         __wbindgen_cast_0000000000000005: function(arg0, arg1) {
-            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [NamedExternref("undefined")], shim_idx: 521, ret: Result(Unit), inner_ret: Some(Result(Unit)) }, mutable: true }) -> Externref`.
+            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [NamedExternref("undefined")], shim_idx: 538, ret: Result(Unit), inner_ret: Some(Result(Unit)) }, mutable: true }) -> Externref`.
             const ret = makeMutClosure(arg0, arg1, wasm_bindgen_f693a71efa87f9bb___convert__closures_____invoke___wasm_bindgen_f693a71efa87f9bb___sys__Undefined__core_37ee0ce0c4cd57d5___result__Result_____wasm_bindgen_f693a71efa87f9bb___JsError___true__4);
             return ret;
         },
         __wbindgen_cast_0000000000000006: function(arg0, arg1) {
-            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [], shim_idx: 822, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
+            // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [], shim_idx: 850, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
             const ret = makeMutClosure(arg0, arg1, wasm_bindgen_f693a71efa87f9bb___convert__closures_____invoke_______true_);
             return ret;
         },

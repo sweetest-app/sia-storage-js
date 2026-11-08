@@ -45,7 +45,6 @@ export interface Host {
 export interface UploadOptions {
     dataShards?: number;
     parityShards?: number;
-    maxBufferedSlabs?: number;
     startOffset?: bigint;
     onShardUploaded?: (progress: ShardProgress) => void;
     onShardAttempted?: (attempt: ShardAttemptInfo) => void;
@@ -54,7 +53,6 @@ export interface UploadOptions {
 export interface PackedUploadOptions {
     dataShards?: number;
     parityShards?: number;
-    maxBufferedSlabs?: number;
     onShardUploaded?: (progress: ShardProgress) => void;
     onShardAttempted?: (attempt: ShardAttemptInfo) => void;
 }
@@ -474,6 +472,10 @@ export class PackedUpload {
      */
     add(stream: ReadableStream): Promise<number>;
     /**
+     * Queues one data shard of a slab opened with `registerSlab`.
+     */
+    addShard(slab: number, index: number, data: Uint8Array): Promise<void>;
+    /**
      * The objects whose slabs have all pinned, indexed the same way
      * [add](Self::add) was called. `undefined` at an index means that object
      * still has a slab in flight.
@@ -493,6 +495,11 @@ export class PackedUpload {
      */
     finalize(): Promise<PinnedObject[]>;
     /**
+     * Shard bytes the upload holds right now: queued shards, the shards a host
+     * is writing, parity being encoded, and the reader's buffer.
+     */
+    heldBytes(): Promise<number>;
+    /**
      * Total bytes added so far across all objects.
      */
     length(): number;
@@ -500,6 +507,17 @@ export class PackedUpload {
      * Optimal size of each slab in bytes.
      */
     optimalDataSize(): number;
+    /**
+     * The highest [`heldBytes`](Self::held_bytes) reached, so the peak does
+     * not depend on how often it is sampled.
+     */
+    peakHeldBytes(): Promise<number>;
+    /**
+     * Opens a slab for shards that arrive one at a time, and returns its id.
+     * `0` means the upload was cancelled. Send its data shards with
+     * [`addShard`](Self::add_shard); the encoder produces parity from them.
+     */
+    registerSlab(length: number): Promise<number>;
     /**
      * Bytes remaining until the current slab is full. Adding objects that
      * fit within this size avoids starting a new slab and minimizes padding.
@@ -900,11 +918,15 @@ export interface InitOutput {
     readonly objectsummary_size: (a: number) => number;
     readonly objectsummary_updatedAt: (a: number) => any;
     readonly packedupload_add: (a: number, b: any) => any;
+    readonly packedupload_addShard: (a: number, b: number, c: number, d: number, e: number) => any;
     readonly packedupload_addedObjects: (a: number) => any;
     readonly packedupload_cancel: (a: number) => void;
     readonly packedupload_finalize: (a: number) => any;
+    readonly packedupload_heldBytes: (a: number) => any;
     readonly packedupload_length: (a: number) => number;
     readonly packedupload_optimalDataSize: (a: number) => number;
+    readonly packedupload_peakHeldBytes: (a: number) => any;
+    readonly packedupload_registerSlab: (a: number, b: number) => any;
     readonly packedupload_remaining: (a: number) => number;
     readonly packedupload_slabs: (a: number) => number;
     readonly pinnedobject_createdAt: (a: number) => any;
