@@ -1,9 +1,9 @@
-Built from sia-sdk-rs 798b361 (sweetest branch, wasm and napi)
+Built from sia-sdk-rs 1b16e2f (sweetest branch, wasm and napi)
 Wrapper 0.2.2 plus the finalizePacked patch, the per-shard calls and the vendored addon. See SWEETEST.md.
 
-433c9f615200f550e43a4255da0067dc202704e5b2316f0305d71a0803a0f16b  wasm/sia_storage_wasm_bg.wasm
+f3e680ab803d02ecb6b4b15ab7ee38f6a73fc498183d4e168cd9a629c86a937b  wasm/sia_storage_wasm_bg.wasm
 70b85890037d737a2dd1c28bfa4f687d7b9a52873ab2b572fee9b69d9f210f46  wasm/sia_storage_wasm.d.ts
-d2e359092367ed253ea3e6aa4707e77530031a093db4400e66912a2c76388bbd  native/sia-storage.darwin-arm64.node
+cf0f39aaba7ec733bb0dd53f8dbf47a13a539df8ebea3ebc47e913fe6b861ea2  native/sia-storage.darwin-arm64.node
 0890400c40f8e40b8df086e3b0a829fa7c211ae100e64df174426b2656df685d  dist/index.js
 c0d8fb7e06f41b4c1c2c30e63f5ee65f0c8b0d2a89b1fa00d74056f94aba6b98  dist/index.node.cjs
-167d0aefb43e26d0fd37009f2c434228d2b397d1e2a939bac50d8da1fb7df85e  dist/sia-storage-sw.js
+25b79e66a9eafae6939eb9515552ccbd741d391fab2f97916cd26bc2e8a83fde  dist/sia-storage-sw.js
